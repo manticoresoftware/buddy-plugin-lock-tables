@@ -10,10 +10,10 @@
 */
 namespace Manticoresearch\Buddy\Plugin\LockTables;
 
-use Manticoresearch\Buddy\Core\Network\Request as NetworkRequest;
-use Manticoresearch\Buddy\Core\Plugin\Request as BaseRequest;
+use Manticoresearch\Buddy\Core\Network\Request;
+use Manticoresearch\Buddy\Core\Plugin\BasePayload;
 
-final class Request extends BaseRequest {
+final class Payload extends BasePayload {
 	public string $path;
 
 	/**
@@ -25,10 +25,10 @@ final class Request extends BaseRequest {
 	}
 
   /**
-	 * @param NetworkRequest $request
+	 * @param Request $request
 	 * @return static
 	 */
-	public static function fromNetworkRequest(NetworkRequest $request): static {
+	public static function fromRequest(Request $request): static {
 		// Cut lock tables prefix
 		$query = trim(substr($request->payload, 11));
 		preg_match_all('/([a-z_]+)(\sAS\s([a-z_]+))?\s([a-z_]+)/i', $query, $matches, PREG_SET_ORDER);
@@ -49,10 +49,10 @@ final class Request extends BaseRequest {
 	}
 
 	/**
-	 * @param NetworkRequest $request
+	 * @param Request $request
 	 * @return bool
 	 */
-	public static function hasMatch(NetworkRequest $request): bool {
+	public static function hasMatch(Request $request): bool {
 		return stripos($request->payload, 'lock tables') === 0;
 	}
 }

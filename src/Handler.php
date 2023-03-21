@@ -52,14 +52,7 @@ final class Handler extends BaseHandler {
 			}
 			$manticoreClient->sendRequest(implode(';', $queries));
 
-			return new TaskResult(
-				[[
-					'total' => sizeof($tables),
-					'error' => '',
-					'warning' => '',
-				],
-				]
-			);
+			return TaskResult::withTotal(sizeof($tables));
 		};
 
 		return Task::createInRuntime(
